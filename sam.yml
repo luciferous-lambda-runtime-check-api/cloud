@@ -44,13 +44,13 @@ Resources:
     Properties:
       DistributionConfig:
         Origins:
-          - Id: !GetAtt BucketContent.RegionalDomainNane
+          - Id: !GetAtt BucketContent.RegionalDomainName
             OriginAccessControlId: !GetAtt OriginAccessControl.Id
-            DomainName: !GetAtt BucketContent.RegionalDomainNane
+            DomainName: !GetAtt BucketContent.RegionalDomainName
             S3OriginConfig:
               OriginAccessIdentity: ""
         DefaultCacheBehavior:
-          TargetOriginId: !GetAtt BucketContent.RegionalDomainNane
+          TargetOriginId: !GetAtt BucketContent.RegionalDomainName
           ViewerProtocolPolicy: redirect-to-https
           AllowedMethods:
             - HEAD

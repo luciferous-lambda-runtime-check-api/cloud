@@ -1,0 +1,26 @@
+name: deploy
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  id-token: write
+  contents: write
+
+jobs:
+  deploy:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v3
+      - uses: aws-actions/configure-aws-credentials@v1
+        with:
+          role-to-assume: ${{ secrets.ROLE_ARN_GITHUB_ACTIONS }}
+          aws-region: ap-northeast-1
+      - uses: aws-actions/setup-sam@v2
+      - name: deploy
+        env:
+          CLOUDFORMATION_DEPLOY_ROLE_ARN: ${{ secrets.ROLE_ARN_CLOUDFORMATION }}
+          SAM_ARTIFACT_BUCKET: ${{ secrets.S3_BUCKET_ARTIFACT }}
+        run: make package deploy

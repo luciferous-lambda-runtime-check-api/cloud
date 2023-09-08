@@ -11,7 +11,7 @@ isort:
 format: isort black
 
 package:
-	uuidgen > src/uuid.txt
+	date > src/date.txt
 	aws cloudformation package \
 		--s3-bucket ${SAM_ARTIFACT_BUCKET} \
 		--s3-prefix $(stack_name) \

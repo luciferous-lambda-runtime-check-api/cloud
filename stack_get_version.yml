@@ -1,0 +1,35 @@
+Transform: AWS::Serverless-2016-10-31
+
+Parameters:
+  Handler:
+    Type: String
+
+  Runtime:
+    Type: String
+
+  RoleArn:
+    Type: String
+
+  TopicArn:
+    Type: String
+
+Resources:
+  Function:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: src
+      Handler: !Ref Handler
+      Runtime: !Ref Runtime
+      MemorySize: 128
+      Timeout: 60
+      Role: !Ref RoleArn
+      EventInvokeConfig:
+        DestinationConfig:
+          OnSuccess:
+            Type: SNS
+            Destination: !Ref TopicArn
+      Events:
+        Daily:
+          Type: Schedule
+          Properties:
+            Schedule: rate(1 day)

@@ -67,6 +67,60 @@ Resources:
         HttpVersion: http2and3
         IPV6Enabled: true
 
+  QueueCreateSummary:
+    Type: AWS::SQS::Queue
+    Properties:
+      VisibilityTimeout: 120
+
+  TopicMessageHub:
+    Type: AWS::SNS::Topic
+
+  QueuePolicyCreateSummary:
+    Type: AWS::SQS::QueuePolicy
+    Properties:
+      Queues:
+        - !Ref QueueCreateSummary
+      PolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: sns.amazonaws.com
+            Resource:
+              - !GetAtt QueueCreateSummary.Arn
+            Action: sqs:SendMessage
+            Condition:
+              ArnEquals:
+                aws:SourceArn: !Ref TopicMessageHub
+
+  RoleGetRuntimeVersion:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+            Action: sts:AssumeRole
+      Policies:
+        - PolicyName: destination
+          PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+              - Effect: Allow
+                Action: sns:Publish
+                Resource: !Ref TopicMessageHub
+
+  StackPython3.8:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: stack_get_version.yml
+      Parameters:
+        Handler: handlers/get_version/python.handler
+        Runtime: python3.8
+        RoleArn: !GetAtt RoleGetRuntimeVersion.Arn
+
 Outputs:
   DomainNameCloudFront:
     Value: !GetAtt Distribution.DomainName

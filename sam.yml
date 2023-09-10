@@ -112,7 +112,7 @@ Resources:
                 Action: sns:Publish
                 Resource: !Ref TopicMessageHub
 
-  StackPython3.8:
+  StackPython38:
     Type: AWS::CloudFormation::Stack
     Properties:
       TemplateURL: stack_get_version.yml

@@ -120,6 +120,7 @@ Resources:
         Handler: handlers/get_version/python.handler
         Runtime: python3.8
         RoleArn: !GetAtt RoleGetRuntimeVersion.Arn
+        TopicArn: !Ref TopicMessageHub
 
 Outputs:
   DomainNameCloudFront:

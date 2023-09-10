@@ -23,6 +23,7 @@ deploy: package
 		--stack-name $(stack_name) \
 		--template-file template.yml \
 		--role-arn ${CLOUDFORMATION_DEPLOY_ROLE_ARN} \
+		--capabilities CAPABILITY_IAM \
 		--no-fail-on-empty-changeset
 
 

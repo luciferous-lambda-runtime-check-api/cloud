@@ -74,6 +74,10 @@ Resources:
 
   TopicMessageHub:
     Type: AWS::SNS::Topic
+    Properties:
+      Subscription:
+        - Protocol: sqs
+          Endpoint: !GetAtt QueueCreateSummary.Arn
 
   QueuePolicyCreateSummary:
     Type: AWS::SQS::QueuePolicy

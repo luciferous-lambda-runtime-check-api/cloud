@@ -12,6 +12,10 @@ python = "^3.11"
 [tool.poetry.group.dev.dependencies]
 isort = "^5.12.0"
 black = "^23.7.0"
+# arn:aws:lambda:ap-northeast-1:017000801446:layer:AWSLambdaPowertoolsPythonV2-Arm64:43
+aws-lambda-powertools = {version = "2.24.0", extras = ["all"]}
+boto3 = "1.27.1"
+botocore = "1.30.1"
 
 [build-system]
 requires = ["poetry-core"]

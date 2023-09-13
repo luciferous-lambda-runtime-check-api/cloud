@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="ProjectRootManager" version="2" project-jdk-name="Python 3.9" project-jdk-type="Python SDK" />
-  <component name="SshConsoleOptionsProvider">
-    <option name="myEncoding" value="UTF-8" />
-    <option name="myConnectionType" value="NONE" />
-    <option name="myConnectionId" value="" />
+  <component name="Black">
+    <option name="enabledOnSave" value="true" />
+    <option name="pathToExecutable" value="$USER_HOME$/.pyenv/shims/black" />
+    <option name="sdkUUID" value="e6ccfb08-de92-4445-8970-b1f722a16410" />
   </component>
+  <component name="ProjectRootManager" version="2" project-jdk-name="Poetry (cloud)" project-jdk-type="Python SDK" />
 </project>

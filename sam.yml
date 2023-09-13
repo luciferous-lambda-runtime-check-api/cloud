@@ -1,5 +1,24 @@
 Transform: AWS::Serverless-2016-10-31
 
+Parameters:
+  LambdaLogGroupPrefix:
+    Type: String
+    Default: /aws/lambda
+
+Globals:
+  Function:
+    Architectures:
+      - arm64
+    Runtime: python3.11
+    Timeout: 150
+    ReservedConcurrentExecutions: 1
+    Layers:
+      - arn:aws:lambda:ap-northeast-1:017000801446:layer:AWSLambdaPowertoolsPythonV2-Arm64:43
+    Environment:
+      Variables:
+        BUCKET_NAME_CONTENT: !Ref BucketContent
+        DISTRIBUTION_ID: !Ref Distribution
+
 Resources:
   BucketContent:
     Type: AWS::S3::Bucket
@@ -70,7 +89,12 @@ Resources:
   QueueCreateSummary:
     Type: AWS::SQS::Queue
     Properties:
-      VisibilityTimeout: 120
+      VisibilityTimeout: 150
+
+  QueueCreateHistory:
+    Type: AWS::SQS::Queue
+    Properties:
+      VisibilityTimeout: 150
 
   TopicMessageHub:
     Type: AWS::SNS::Topic
@@ -78,6 +102,8 @@ Resources:
       Subscription:
         - Protocol: sqs
           Endpoint: !GetAtt QueueCreateSummary.Arn
+        - Protocol: sqs
+          Endpoint: !GetAtt QueueCreateHistory.Arn
 
   QueuePolicyCreateSummary:
     Type: AWS::SQS::QueuePolicy
@@ -92,10 +118,55 @@ Resources:
               Service: sns.amazonaws.com
             Resource:
               - !GetAtt QueueCreateSummary.Arn
+              - !GetAtt QueueCreateHistory.Arn
             Action: sqs:SendMessage
             Condition:
               ArnEquals:
                 aws:SourceArn: !Ref TopicMessageHub
+
+  FunctionCreateSummary:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: src/
+      Handler: handlers/create_summary.handler
+      Policies:
+        - arn:aws:iam::aws:policy/AmazonS3FullAccess
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaSQSQueueExecutionRole
+        - arn:aws:iam::aws:policy/CloudFrontFullAccess
+      Events:
+        Sqs:
+          Type: SQS
+          Properties:
+            BatchSize: 1
+            Queue: !GetAtt QueueCreateSummary.Arn
+
+  LogGroupCreateSummary:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: !Sub ${LambdaLogGroupPrefix}/${FunctionCreateSummary}
+      RetentionInDays: 7
+
+  FunctionCreateHistory:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: src/
+      Handler: handlers/create_history.handler
+      Policies:
+        - arn:aws:iam::aws:policy/AmazonS3FullAccess
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaSQSQueueExecutionRole
+        - arn:aws:iam::aws:policy/CloudFrontFullAccess
+      Events:
+        Sqs:
+          Type: SQS
+          Properties:
+            BatchSize: 1
+            Queue: !GetAtt QueueCreateHistory.Arn
+
+  LogGroupCreateHistory:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: !Sub ${LambdaLogGroupPrefix}/${FunctionCreateHistory}
+      RetentionInDays: 7
 
   RoleGetRuntimeVersion:
     Type: AWS::IAM::Role

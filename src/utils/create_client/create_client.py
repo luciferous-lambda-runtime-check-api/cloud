@@ -4,9 +4,7 @@ import boto3
 from botocore.client import BaseClient
 from botocore.config import Config
 
-CONFIG_DEFAULT = Config(
-    connect_timeout=10, read_timeout=10, retries={"mode": "standard"}
-)
+CONFIG_DEFAULT = Config(connect_timeout=5, read_timeout=5, retries={"mode": "standard"})
 
 
 def create_client(

@@ -10,7 +10,7 @@ Globals:
     Architectures:
       - arm64
     Runtime: python3.11
-    Timeout: 150
+    Timeout: 15
     ReservedConcurrentExecutions: 1
     Layers:
       - arn:aws:lambda:ap-northeast-1:017000801446:layer:AWSLambdaPowertoolsPythonV2-Arm64:43
@@ -105,12 +105,12 @@ Resources:
   QueueCreateSummary:
     Type: AWS::SQS::Queue
     Properties:
-      VisibilityTimeout: 150
+      VisibilityTimeout: 15
 
   QueueCreateHistory:
     Type: AWS::SQS::Queue
     Properties:
-      VisibilityTimeout: 150
+      VisibilityTimeout: 15
 
   TopicMessageHub:
     Type: AWS::SNS::Topic

@@ -105,6 +105,9 @@ Resources:
         - Protocol: sqs
           Endpoint: !GetAtt QueueCreateHistory.Arn
 
+  TopicAsyncInvoke:
+    Type: AWS::SNS::Topic
+
   QueuePolicyCreateSummary:
     Type: AWS::SQS::QueuePolicy
     Properties:
@@ -196,6 +199,7 @@ Resources:
         Runtime: python3.8
         RoleArn: !GetAtt RoleGetRuntimeVersion.Arn
         TopicArn: !Ref TopicMessageHub
+        TopicArnInvoke: !Ref TopicAsyncInvoke
 
 Outputs:
   DomainNameCloudFront:

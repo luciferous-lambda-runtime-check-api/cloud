@@ -13,6 +13,9 @@ Parameters:
   TopicArn:
     Type: String
 
+  TopicArnInvoke:
+    Type: String
+
 Resources:
   Function:
     Type: AWS::Serverless::Function
@@ -33,3 +36,7 @@ Resources:
           Type: Schedule
           Properties:
             Schedule: cron(0 0 * * ? *)
+        Invoke:
+          Type: SNS
+          Properties:
+            Topic: !Ref TopicArnInvoke

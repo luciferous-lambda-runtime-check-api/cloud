@@ -30,7 +30,7 @@ def get_summary_data(bucket: str, s3_client) -> Dict[str, RuntimeVersion]:
     option = {"Bucket": bucket, "Key": JSON_FILE_NAME}
     logger.info(
         "get previous data",
-        exc_info={
+        extra={
             "additional_data": {
                 "service": "s3",
                 "command": "get_object",
@@ -61,7 +61,7 @@ def put_summary_data(bucket: str, summary: Dict[str, RuntimeVersion], s3_client)
     }
     logger.info(
         "put_summary_data",
-        exc_info={
+        extra={
             "additional_data": {
                 "service": "s3",
                 "command": "put_object",

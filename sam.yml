@@ -206,7 +206,7 @@ Resources:
                 Action: sns:Publish
                 Resource: !Ref TopicMessageHub
 
-  StackPython38:
+  StackPython3x8:
     Type: AWS::CloudFormation::Stack
     Properties:
       TemplateURL: stack_get_version.yml
@@ -217,7 +217,7 @@ Resources:
         TopicArn: !Ref TopicMessageHub
         TopicArnInvoke: !Ref TopicAsyncInvoke
 
-  StackPython39:
+  StackPython3x9:
     Type: AWS::CloudFormation::Stack
     Properties:
       TemplateURL: stack_get_version.yml
@@ -228,7 +228,7 @@ Resources:
         TopicArn: !Ref TopicMessageHub
         TopicArnInvoke: !Ref TopicAsyncInvoke
 
-  StackPython3_10:
+  StackPython3x10:
     Type: AWS::CloudFormation::Stack
     Properties:
       TemplateURL: stack_get_version.yml
@@ -239,7 +239,7 @@ Resources:
         TopicArn: !Ref TopicMessageHub
         TopicArnInvoke: !Ref TopicAsyncInvoke
 
-  StackPython3_11:
+  StackPython3x11:
     Type: AWS::CloudFormation::Stack
     Properties:
       TemplateURL: stack_get_version.yml

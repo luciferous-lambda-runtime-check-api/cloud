@@ -32,4 +32,4 @@ Resources:
         Daily:
           Type: Schedule
           Properties:
-            Schedule: rate(1 day)
+            Schedule: cron(0 0 * * ? *)

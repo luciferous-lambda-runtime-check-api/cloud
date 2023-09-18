@@ -2,8 +2,6 @@ import json
 from dataclasses import asdict
 from typing import Dict
 
-from mypy_boto3_s3 import S3Client  # todo: 後で消す
-
 from utils.create_client import create_client
 from utils.create_logger import create_logger
 from utils.decorate_handler import decorate_handler
@@ -28,9 +26,7 @@ def handler(event, context, s3_client=create_client("s3")):
     )
 
 
-def get_summary_data(
-    bucket: str, s3_client: S3Client
-) -> Dict[str, RuntimeVersion]:  # todo 後で消す
+def get_summary_data(bucket: str, s3_client) -> Dict[str, RuntimeVersion]:
     option = {"Bucket": bucket, "Key": JSON_FILE_NAME}
     logger.info(
         "get previous data",

@@ -217,6 +217,39 @@ Resources:
         TopicArn: !Ref TopicMessageHub
         TopicArnInvoke: !Ref TopicAsyncInvoke
 
+  StackPython39:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: stack_get_version.yml
+      Parameters:
+        Handler: handlers/get_version/python.handler
+        Runtime: python3.9
+        RoleArn: !GetAtt RoleGetRuntimeVersion.Arn
+        TopicArn: !Ref TopicMessageHub
+        TopicArnInvoke: !Ref TopicAsyncInvoke
+
+  StackPython3_10:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: stack_get_version.yml
+      Parameters:
+        Handler: handlers/get_version/python.handler
+        Runtime: python3.10
+        RoleArn: !GetAtt RoleGetRuntimeVersion.Arn
+        TopicArn: !Ref TopicMessageHub
+        TopicArnInvoke: !Ref TopicAsyncInvoke
+
+  StackPython3_11:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: stack_get_version.yml
+      Parameters:
+        Handler: handlers/get_version/python.handler
+        Runtime: python3.11
+        RoleArn: !GetAtt RoleGetRuntimeVersion.Arn
+        TopicArn: !Ref TopicMessageHub
+        TopicArnInvoke: !Ref TopicAsyncInvoke
+
 Outputs:
   DomainNameCloudFront:
     Value: !GetAtt Distribution.DomainName

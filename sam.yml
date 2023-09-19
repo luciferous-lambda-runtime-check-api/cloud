@@ -196,7 +196,7 @@ Resources:
         Daily:
           Type: Schedule
           Properties:
-            Schedule: cron(0 3 * * ? *)
+            Schedule: cron(30 0 * * ? *)
 
   LogGroupCreateInvalidation:
     Type: AWS::Logs::LogGroup
@@ -274,6 +274,17 @@ Resources:
       Parameters:
         Handler: handlers/get_version/node.handler
         Runtime: nodejs18.x
+        RoleArn: !GetAtt RoleGetRuntimeVersion.Arn
+        TopicArn: !Ref TopicMessageHub
+        TopicArnInvoke: !Ref TopicAsyncInvoke
+
+  StackRuby3x2:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: stack_get_version.yml
+      Parameters:
+        Handler: handlers/get_version/ruby.handler
+        Runtime: ruby3.2
         RoleArn: !GetAtt RoleGetRuntimeVersion.Arn
         TopicArn: !Ref TopicMessageHub
         TopicArnInvoke: !Ref TopicAsyncInvoke

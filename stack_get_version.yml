@@ -23,6 +23,7 @@ Resources:
       CodeUri: src
       Handler: !Ref Handler
       Runtime: !Ref Runtime
+      Description: !Sub (${Runtime}) get_version_function
       MemorySize: 128
       Timeout: 60
       Role: !Ref RoleArn

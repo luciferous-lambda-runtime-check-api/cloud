@@ -151,7 +151,6 @@ Resources:
       Policies:
         - arn:aws:iam::aws:policy/AmazonS3FullAccess
         - arn:aws:iam::aws:policy/service-role/AWSLambdaSQSQueueExecutionRole
-        - arn:aws:iam::aws:policy/CloudFrontFullAccess
       Events:
         Sqs:
           Type: SQS
@@ -173,7 +172,6 @@ Resources:
       Policies:
         - arn:aws:iam::aws:policy/AmazonS3FullAccess
         - arn:aws:iam::aws:policy/service-role/AWSLambdaSQSQueueExecutionRole
-        - arn:aws:iam::aws:policy/CloudFrontFullAccess
       Events:
         Sqs:
           Type: SQS
@@ -185,6 +183,25 @@ Resources:
     Type: AWS::Logs::LogGroup
     Properties:
       LogGroupName: !Sub ${LambdaLogGroupPrefix}/${FunctionCreateHistory}
+      RetentionInDays: 7
+
+  FunctionCreateInvalidation:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: src/
+      Handler: handlers/create_invalidation.handler
+      Policies:
+        - arn:aws:iam::aws:policy/CloudFrontFullAccess
+      Events:
+        Daily:
+          Type: Schedule
+          Properties:
+            Schedule: cron(0 3 * * ? *)
+
+  LogGroupCreateInvalidation:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: !Sub ${LambdaLogGroupPrefix}/${FunctionCreateInvalidation}
       RetentionInDays: 7
 
   RoleGetRuntimeVersion:

@@ -267,6 +267,17 @@ Resources:
         TopicArn: !Ref TopicMessageHub
         TopicArnInvoke: !Ref TopicAsyncInvoke
 
+  StackPython3x12:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: stack_get_version.yml
+      Parameters:
+        Handler: handlers/get_version/python.handler
+        Runtime: python3.12
+        RoleArn: !GetAtt RoleGetRuntimeVersion.Arn
+        TopicArn: !Ref TopicMessageHub
+        TopicArnInvoke: !Ref TopicAsyncInvoke
+
   StackNode18:
     Type: AWS::CloudFormation::Stack
     Properties:
